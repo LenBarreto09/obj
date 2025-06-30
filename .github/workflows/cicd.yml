@@ -47,3 +47,11 @@ jobs:
               echo "Building and pushing Docker image..."
               docker build -t ${{ secrets.DOCKER_USERNAME }}/app:${{ github.sha }} .
               docker push ${{ secrets.DOCKER_USERNAME }}/app:${{ github.sha }}
+          - name: Deploy to Server
+            # This step deploys the Docker image to the server
+            uses: azure/webapps-deploy@v2
+            with:
+              app-name: 'devopsepita'
+              publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+              images: ${{ secrets.DOCKER_USERNAME }}/app:${{ github.sha }}
+ 
